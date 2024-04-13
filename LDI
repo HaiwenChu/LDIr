@@ -1,0 +1,23 @@
+library(ggplot2)
+
+#dataframe consisting of:
+# column 1) language groups ("lang")
+# column 2) group sizes ("n"). Can include left ("l") and right ("r") endpoints
+#data is read into "dat"
+
+#[optional] creates left and right endpoints with bars length n-1 and height n
+#dat$r<-cumsum(dat$n)-row(dat)
+#dat$l<-dat$r-dat$n+1
+
+#creates plot
+ggplot(dat, aes(ymin = 0)) +
+#main "matching" rectangles in red
+  geom_rect(aes(xmin = l, xmax = r, ymax = n,colour="red",fill="red")) +
+#labels for rectangles. May want to delete some of the language labels for design purposes
+  geom_text(aes(x=(l+r)/2,y=n/2,label=lang)) +
+#rectangles in green for non-matching languages
+  geom_rect(aes(xmin = l, xmax = r, ymin=n, ymax = sum(n)),
+            colour="green",fill="green") +
+  xlab("Languages")+
+  ylab("Number of students")+
+  guides(fill="none",colour="none")
